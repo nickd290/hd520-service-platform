@@ -1,0 +1,21 @@
+{
+  "name": "hd520-service-platform",
+  "version": "1.0.0",
+  "description": "HD520 Service Technician Platform - Complete solution for machine service, training, and monitoring",
+  "private": true,
+  "scripts": {
+    "install:all": "npm install && cd client && npm install && cd ../server && npm install",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:server": "cd server && npm run dev",
+    "dev:client": "cd client && npm run dev",
+    "build:server": "cd server && npm run build",
+    "build:client": "cd client && npm run build",
+    "build": "npm run build:server && npm run build:client"
+  },
+  "keywords": ["hd520", "service", "platform", "technician", "training"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}
