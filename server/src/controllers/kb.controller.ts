@@ -6,7 +6,19 @@ import fs from 'fs';
 import path from 'path';
 import mammoth from 'mammoth';
 
-const pdf = require('pdf-parse');
+// Lazy load pdf-parse to avoid DOMMatrix issues on Railway
+let pdfParse: any = null;
+const getPdfParse = () => {
+  if (!pdfParse) {
+    try {
+      pdfParse = require('pdf-parse');
+    } catch (error) {
+      console.warn('pdf-parse not available, PDF uploads will be disabled');
+      return null;
+    }
+  }
+  return pdfParse;
+};
 
 // Get all knowledge base entries
 export const getAllKnowledge = async (req: AuthRequest, res: Response) => {
@@ -180,6 +192,10 @@ export const uploadDocument = async (req: AuthRequest, res: Response) => {
 
     // Parse based on file type
     if (file.mimetype === 'application/pdf') {
+      const pdf = getPdfParse();
+      if (!pdf) {
+        return res.status(500).json({ error: 'PDF parsing is not available on this server' });
+      }
       const dataBuffer = fs.readFileSync(file.path);
       const pdfData = await pdf(dataBuffer);
       content = pdfData.text;
