@@ -50,6 +50,7 @@ export interface QuizOption {
 export interface ModuleWithContent extends TrainingModule {
   content: TrainingContent[];
   quiz: QuizQuestion[];
+  last_section_viewed?: number;
 }
 
 export interface ProgressSummary {
